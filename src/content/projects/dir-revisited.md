@@ -19,4 +19,4 @@ This project studies which registration-specific design choices are most importa
 
 - Evaluates multi-resolution estimation, local correlation, and inverse-consistency constraints in controlled experiments.
 - Shows that relatively simple network architectures can remain competitive when the registration formulation is designed carefully.
-- Includes validation across LUMIR and OASIS registration tasks.
+- Includes validation across three Learn2Reg tasks: brain MR-MR (OASIS and LUMIR) and abdominal CT-CT.
