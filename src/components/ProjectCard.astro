@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  headline?: string;
+  supportingTitle?: string;
+  supportingTitleEmphasis?: string;
+  supportingTitleEmphasisPosition?: 'before' | 'after';
+  subtitle?: string;
+  venue: string;
+  image: string;
+  imageAlt: string;
+  secondaryImage?: string;
+  secondaryImageAlt?: string;
+  imageSide?: 'left' | 'right';
+  paper?: string;
+  code?: string;
+  codeLabel?: string;
+}
+
+const {
+  title,
+  headline = title,
+  supportingTitle,
+  supportingTitleEmphasis,
+  supportingTitleEmphasisPosition = 'after',
+  subtitle,
+  venue,
+  image,
+  imageAlt,
+  secondaryImage,
+  secondaryImageAlt,
+  imageSide = 'left',
+  paper,
+  code,
+  codeLabel = 'Code',
+} = Astro.props;
+---
+<article class:list={["project", imageSide === 'right' && 'project--reverse']}>
+  <a class:list={["project-media", secondaryImage && "project-media--stacked"]} href={code || paper} target="_blank" rel="noreferrer" aria-label={`Open ${title} project`}>
+    <img src={image} alt={imageAlt} loading="lazy" />
+    {secondaryImage && <img src={secondaryImage} alt={secondaryImageAlt || `${title} supplementary figure`} loading="lazy" />}
+  </a>
+
+  <div class="project-copy">
+    <p class="eyebrow">{venue}</p>
+    <div class="project-title-block">
+      <h3>{headline}</h3>
+      {supportingTitle && (
+        <p class="project-supporting-title">
+          {supportingTitleEmphasis && supportingTitleEmphasisPosition === 'before' && <><span class="project-title-emphasis">{supportingTitleEmphasis}</span>{' '}</>}
+          {supportingTitle}
+          {supportingTitleEmphasis && supportingTitleEmphasisPosition === 'after' && <> {' '}<span class="project-title-emphasis">{supportingTitleEmphasis}</span></>}
+        </p>
+      )}
+      {subtitle && <p class="project-subtitle">{subtitle}</p>}
+    </div>
+    <div class="project-body">
+      <slot />
+    </div>
+    <div class="project-links">
+      {paper && <a href={paper} target="_blank" rel="noreferrer">Paper <span aria-hidden="true">↗</span></a>}
+      {code && <a href={code} target="_blank" rel="noreferrer">{codeLabel} <span aria-hidden="true">↗</span></a>}
+    </div>
+  </div>
+</article>

@@ -1,0 +1,104 @@
+---
+import Header from '../components/Header.astro';
+import SkillGroup from '../components/SkillGroup.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProfileLinks from '../components/ProfileLinks.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const sectionModules = import.meta.glob('../content/sections/*.md', { eager: true });
+const aboutSection: any = sectionModules['../content/sections/about.md'];
+const skillsSection: any = sectionModules['../content/sections/skills.md'];
+const projectsSection: any = sectionModules['../content/sections/projects.md'];
+const publicationsSection: any = sectionModules['../content/sections/publications.md'];
+const AboutContent = aboutSection.Content;
+const PublicationsContent = publicationsSection.Content;
+
+const projectModules = import.meta.glob('../content/projects/*.md', { eager: true });
+const projects = Object.values(projectModules)
+  .map((project: any) => project)
+  .sort((a: any, b: any) => a.frontmatter.order - b.frontmatter.order);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Hengjie Liu — medical imaging, deformable image registration, MRI, machine learning, and numerical optimization." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Hengjie Liu</title>
+  </head>
+  <body id="top">
+    <Header />
+
+    <main>
+      <section id="about" class="hero shell">
+        <div class="hero-main">
+          <p class="kicker">{aboutSection.frontmatter.kicker}</p>
+          <h1>{aboutSection.frontmatter.name}</h1>
+          <p class="role">{aboutSection.frontmatter.role}</p>
+
+          <div class="bio">
+            <AboutContent />
+          </div>
+
+          <ProfileLinks />
+        </div>
+
+        <aside class="trajectory" aria-label="Research trajectory">
+          <p class="eyebrow">{aboutSection.frontmatter.trajectoryLabel}</p>
+          {aboutSection.frontmatter.trajectory.map((item: any, index: number) => (
+            <div class="trajectory-block">
+              <div class="trajectory-item">
+                <span class="trajectory-year">{item.year}</span>
+                <strong>{item.title}</strong>
+                <p>{item.description}</p>
+              </div>
+              {index < aboutSection.frontmatter.trajectory.length - 1 && <div class="trajectory-line" aria-hidden="true"></div>}
+            </div>
+          ))}
+        </aside>
+      </section>
+
+      <section id="skills" class="section shell">
+        <div class="section-heading">
+          <p class="eyebrow">{skillsSection.frontmatter.eyebrow}</p>
+          <h2>{skillsSection.frontmatter.title}</h2>
+        </div>
+        <div class="skills-grid">
+          {skillsSection.frontmatter.groups.map((group: any) => <SkillGroup title={group.title} items={group.items} />)}
+        </div>
+      </section>
+
+      <section id="projects" class="section shell projects-section">
+        <div class="section-heading">
+          <p class="eyebrow">{projectsSection.frontmatter.eyebrow}</p>
+          <h2>{projectsSection.frontmatter.title}</h2>
+        </div>
+
+        <div class="project-list">
+          {projects.map((project: any) => {
+            const Content = project.Content;
+            return (
+              <ProjectCard {...project.frontmatter}>
+                <Content />
+              </ProjectCard>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="publications" class="section shell publications-section">
+        <div class="section-heading">
+          <p class="eyebrow">{publicationsSection.frontmatter.eyebrow}</p>
+          <h2>{publicationsSection.frontmatter.title}</h2>
+        </div>
+        <div class="publication-list">
+          <PublicationsContent />
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>

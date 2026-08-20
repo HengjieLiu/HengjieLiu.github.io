@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+
+const sectionModules = import.meta.glob('../content/sections/*.md', { eager: true });
+const aboutSection: any = sectionModules['../content/sections/about.md'];
+---
+<footer>
+  <div class="footer-shell">
+    <p>{aboutSection.frontmatter.name}</p>
+    <div>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={site.github} target="_blank" rel="noreferrer">GitHub</a>
+      <a href={site.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href={site.scholar} target="_blank" rel="noreferrer">Google Scholar</a>
+    </div>
+  </div>
+</footer>

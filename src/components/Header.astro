@@ -1,0 +1,18 @@
+---
+const sectionModules = import.meta.glob('../content/sections/*.md', { eager: true });
+const aboutSection: any = sectionModules['../content/sections/about.md'];
+const skillsSection: any = sectionModules['../content/sections/skills.md'];
+const projectsSection: any = sectionModules['../content/sections/projects.md'];
+const publicationsSection: any = sectionModules['../content/sections/publications.md'];
+---
+<header class="site-header">
+  <div class="nav-shell">
+    <a class="brand" href="#top">{aboutSection.frontmatter.name}</a>
+    <nav aria-label="Primary navigation">
+      <a href="#about">{aboutSection.frontmatter.title}</a>
+      <a href="#skills">{skillsSection.frontmatter.title}</a>
+      <a href="#projects">{projectsSection.frontmatter.title}</a>
+      <a href="#publications">{publicationsSection.frontmatter.title}</a>
+    </nav>
+  </div>
+</header>
